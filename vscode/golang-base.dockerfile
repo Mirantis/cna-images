@@ -6,7 +6,8 @@
 #-------------------------------------------------------------------------------------------------------------
 #
 # Spell checker
-# cSpell: words buildifier deps buildifier buildozer gopls goimports gotests godoctor gomod golangci gopkgs dlv gomodifytags fillstruct godef gometalinter devcontainer UID UIDs gocode
+# cSpell: words gopls goimports gotests godoctor gomod golangci gopkgs dlv gomodifytags fillstruct godef gometalinter devcontainer
+# cSpell: words UID UIDs gocode lsb iproute cna CLIs tmp gotools NOPASSWD lfs
 # cSpell: ignore mdempsky cweill haya sqs davidrjenni uudashr mgechev rogpeppe ramya rao acroca zmb gogetdoc stamblerre
 
 FROM golang:1
@@ -21,6 +22,9 @@ ENV DEBIAN_FRONTEND=noninteractive
 ARG USERNAME=vscode
 ARG USER_UID=1000
 ARG USER_GID=$USER_UID
+
+# For commit messages
+ENV EDITOR=vim
 
 # Configure apt, install packages and tools
 RUN apt-get update \
@@ -77,6 +81,9 @@ RUN apt-get update \
     && apt-get install -y sudo \
     && echo $USERNAME ALL=\(root\) NOPASSWD:ALL > /etc/sudoers.d/$USERNAME \
     && chmod 0440 /etc/sudoers.d/$USERNAME \
+    #
+    # Install essential packages
+    && apt-get install -y file git-lfs vim fish docker.io \
     #
     # Clean up
     && apt-get autoremove -y \
